@@ -3,6 +3,7 @@
 import os
 import requests
 from pyrogram import Client
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 API = "https://api.abirhasan.wtf/pypi?query="
@@ -31,6 +32,15 @@ def pypi_text(query):
     text += f"\n**Latest Release Date:**`{info['LatestReleaseDate']}`"
     text += f"\n**PiP Command:** `{info['PipCommand']}`"
     return text
+
+
+def pypi_buttons(query):
+    info = pypi(query)
+    buttons = [
+        InlineKeyboardButton(text="PyPi", url=info['PyPi']),
+        InlineKeyboardButton(text="Home Page", url=info['HomePage'])
+    ]
+    return buttons
 
 
 Bot.run()
