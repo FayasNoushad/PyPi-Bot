@@ -15,4 +15,10 @@ Bot = Client(
 )
 
 
+def pypi(query):
+    r = requests.get(API + query)
+    info = r.json()
+    return info
+
+
 Bot.run()
