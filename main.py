@@ -7,6 +7,7 @@ from pyrogram import Client
 
 API = "https://api.abirhasan.wtf/pypi?query="
 
+
 Bot = Client(
     "PyPi-Bot",
     bot_token = os.environ["BOT_TOKEN"],
