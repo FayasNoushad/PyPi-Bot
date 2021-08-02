@@ -42,15 +42,18 @@ async def start(bot, update):
 
 @Bot.on_message(filters.text)
 async def pypi_info(bot, update):
-    query = update.text if update.chat.type == "private" else update.text.split()[1]
-    text = pypi_text(query)
-    reply_markup = InlineKeyboardMarkup([pypi_buttons(query), BUTTONS])
-    await update.reply_text(
-        text=text,
-        disable_web_page_preview=True,
-        reply_markup=reply_markup,
-        quote=True
-    )
+    try:
+        query = update.text if update.chat.type == "private" else update.text.split()[1]
+        text = pypi_text(query)
+        reply_markup = InlineKeyboardMarkup([pypi_buttons(query), BUTTONS])
+        await update.reply_text(
+            text=text,
+            disable_web_page_preview=True,
+            reply_markup=reply_markup,
+            quote=True
+        )
+    except:
+        pass
 
 
 def pypi(query):
