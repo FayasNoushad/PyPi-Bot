@@ -28,7 +28,7 @@ Bot = Client(
 )
 
 
-@Bot.on_message(filters.private & filters.command(["start"]))
+@Bot.on_message(filters.private & filters.command(["start", "help", "about"]))
 async def start(bot, update):
     text = START_TEXT.format(update.from_user.mention)
     reply_markup = InlineKeyboardMarkup(BUTTONS)
