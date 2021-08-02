@@ -18,11 +18,7 @@ I am a pypi package search telegram bot.
 Made by @FayasNoushad
 """
 
-BUTTONS = InlineKeyboardMarkup(
-        [[
-        InlineKeyboardButton('⚙ Join Updates Channel ⚙', url='https://telegram.me/FayasNoushad')
-        ]]
-    )
+BUTTONS = [InlineKeyboardButton('⚙ Join Updates Channel ⚙', url='https://telegram.me/FayasNoushad')]
 
 Bot = Client(
     "PyPi-Bot",
@@ -35,7 +31,20 @@ Bot = Client(
 @Bot.on_message(filters.private & filters.command(["start"]))
 async def start(bot, update):
     text = START_TEXT.format(update.from_user.mention)
-    reply_markup = BUTTONS
+    reply_markup = InlineKeyboardMarkup(BUTTONS)
+    await update.reply_text(
+        text=text,
+        disable_web_page_preview=True,
+        reply_markup=reply_markup,
+        quote=True
+    )
+
+
+@Bot.on_message(filters.private & filters.text)
+async def pypi_info(bot, update):
+    query = update.text
+    text = pypi_text(query)
+    reply_markup = InlineKeyboardMarkup(pypi_buttons(query), BUTTONS)
     await update.reply_text(
         text=text,
         disable_web_page_preview=True,
