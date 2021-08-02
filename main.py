@@ -40,9 +40,9 @@ async def start(bot, update):
     )
 
 
-@Bot.on_message(filters.private & filters.text)
+@Bot.on_message(filters.text)
 async def pypi_info(bot, update):
-    query = update.text
+    query = update.text if update.chat.type == "private" else update.text.split()[1]
     text = pypi_text(query)
     reply_markup = InlineKeyboardMarkup(pypi_buttons(query), BUTTONS)
     await update.reply_text(
