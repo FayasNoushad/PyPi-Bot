@@ -2,12 +2,27 @@
 
 import os
 import requests
-from pyrogram import Client
+from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 
 API = "https://api.abirhasan.wtf/pypi?query="
 
+START_TEXT = """
+Hello {},
+I am a pypi package search telegram bot.
+
+- Send a pypi package name.
+- I will send the information of package.
+
+Made by @FayasNoushad
+"""
+
+BUTTONS = InlineKeyboardMarkup(
+        [[
+        InlineKeyboardButton('⚙ Join Updates Channel ⚙', url='https://telegram.me/FayasNoushad')
+        ]]
+    )
 
 Bot = Client(
     "PyPi-Bot",
@@ -15,6 +30,18 @@ Bot = Client(
     api_id = int(os.environ["API_ID"]),
     api_hash = os.environ["API_HASH"]
 )
+
+
+@Bot.on_message(filters.private & filters.command(["start"]))
+async def start(bot, update):
+    text = START_TEXT.format(update.from_user.mention)
+    reply_markup = BUTTONS
+    await update.reply_text(
+        text=text,
+        disable_web_page_preview=True,
+        reply_markup=reply_markup,
+        quote=True
+    )
 
 
 def pypi(query):
