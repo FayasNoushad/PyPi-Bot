@@ -2,6 +2,7 @@
 
 import os
 import requests
+from requests.utils import requote_uri
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -42,22 +43,19 @@ async def start(bot, update):
 
 @Bot.on_message(filters.text)
 async def pypi_info(bot, update):
-    try:
-        query = update.text if update.chat.type == "private" else update.text.split()[1]
-        text = pypi_text(query)
-        reply_markup = InlineKeyboardMarkup([pypi_buttons(query), BUTTONS])
-        await update.reply_text(
-            text=text,
-            disable_web_page_preview=True,
-            reply_markup=reply_markup,
-            quote=True
-        )
-    except:
-        pass
+    query = update.text if update.chat.type == "private" else update.text.split()[1]
+    text = pypi_text(query)
+    reply_markup = InlineKeyboardMarkup([pypi_buttons(query), BUTTONS])
+    await update.reply_text(
+        text=text,
+        disable_web_page_preview=True,
+        reply_markup=reply_markup,
+        quote=True
+    )
 
 
 def pypi(query):
-    r = requests.get(API + query)
+    r = requests.get(requote_uri(API + query))
     info = r.json()
     return info
 
@@ -65,8 +63,8 @@ def pypi(query):
 def pypi_text(query):
     info = pypi(query)
     text = "--**Information**--\n"
-    text += f"\n**Title:** `{info['Title']}`"
     text += f"\n**Package Name:** `{info['PackageName']}`"
+    text += f"\n**Title:** `{info['Title']}`"
     text += f"\n**About:** `{info['About']}`"
     text += f"\n**Latest Release Date:** `{info['LatestReleaseDate']}`"
     text += f"\n**PiP Command:** `{info['PipCommand']}`"
