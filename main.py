@@ -2,6 +2,7 @@
 
 import os
 import requests
+from requests.utils import requote_uri
 from pyrogram import Client, filters
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
@@ -57,7 +58,7 @@ async def pypi_info(bot, update):
 
 
 def pypi(query):
-    r = requests.get(API + query)
+    r = requests.get(requote_uri(API + query))
     info = r.json()
     return info
 
@@ -65,8 +66,8 @@ def pypi(query):
 def pypi_text(query):
     info = pypi(query)
     text = "--**Information**--\n"
-    text += f"\n**Title:** `{info['Title']}`"
     text += f"\n**Package Name:** `{info['PackageName']}`"
+    text += f"\n**Title:** `{info['Title']}`"
     text += f"\n**About:** `{info['About']}`"
     text += f"\n**Latest Release Date:** `{info['LatestReleaseDate']}`"
     text += f"\n**PiP Command:** `{info['PipCommand']}`"
