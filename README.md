@@ -1,6 +1,6 @@
 # PyPi-Bot
 
-A pypi packages search telegram bot.
+A pypi packages information finder telegram bot.
 
 ---
 
