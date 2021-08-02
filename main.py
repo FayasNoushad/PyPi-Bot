@@ -31,7 +31,7 @@ Bot = Client(
 @Bot.on_message(filters.private & filters.command(["start", "help", "about"]))
 async def start(bot, update):
     text = START_TEXT.format(update.from_user.mention)
-    reply_markup = InlineKeyboardMarkup(BUTTONS)
+    reply_markup = InlineKeyboardMarkup([BUTTONS])
     await update.reply_text(
         text=text,
         disable_web_page_preview=True,
@@ -44,7 +44,7 @@ async def start(bot, update):
 async def pypi_info(bot, update):
     query = update.text if update.chat.type == "private" else update.text.split()[1]
     text = pypi_text(query)
-    reply_markup = InlineKeyboardMarkup(pypi_buttons(query), BUTTONS)
+    reply_markup = InlineKeyboardMarkup([pypi_buttons(query), BUTTONS])
     await update.reply_text(
         text=text,
         disable_web_page_preview=True,
