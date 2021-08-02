@@ -65,7 +65,7 @@ def pypi_text(query):
     text += f"\n**Package Name:** `{info['PackageName']}`"
     text += f"\n**Title:** `{info['Title']}`"
     text += f"\n**About:** `{info['About']}`"
-    text += f"\n**Latest Release Date:**`{info['LatestReleaseDate']}`"
+    text += f"\n**Latest Release Date:** `{info['LatestReleaseDate']}`"
     text += f"\n**PiP Command:** `{info['PipCommand']}`"
     return text
 
