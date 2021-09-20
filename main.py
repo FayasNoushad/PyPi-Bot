@@ -58,7 +58,7 @@ async def pypi_info(bot, update):
 
 
 def pypi(query):
-    r = requests.get(requote_uri(API + query))
+    r = requests.get(API + requote_uri(query))
     info = r.json()
     return info
 
