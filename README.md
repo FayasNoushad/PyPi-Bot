@@ -1,21 +1,5 @@
-```
-Made with Python3
-(C) @FayasNoushad
-Copyright permission under MIT License
-License -> https://github.com/FayasNoushad/PyPi-Bot/blob/main/LICENSE
-```
-
----
-
-## Deploy
-
-```sh
-git clone https://github.com/FayasNoushad/PyPi-Bot.git
-cd PyPi-Bot
-pip3 install -r requirements.txt
-# <Create Variables appropriately>
-python3 main.py
-```
+## PyPi Bot
+A pypi search telegram bot
 
 ---
 
@@ -27,10 +11,8 @@ python3 main.py
 
 ---
 
-## Credits
+## API
 
-- [Fayas Noushad](https://github.com/FayasNoushad)
-- [Pyrogram](https://github.com/pyrogram/pyrogram)
-- [PyPi API](https://api.abirhasan.wtf/pypi)
+https://api.abirhasan.wtf/pypi
 
 ---
