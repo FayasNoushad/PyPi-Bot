@@ -18,9 +18,3 @@ start - For start bot
 ```
 
 ---
-
-## API
-
-https://api.abirhasan.wtf/pypi
-
----

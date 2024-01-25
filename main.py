@@ -1,13 +1,14 @@
-# Author: Fayas (https://github.com/FayasNoushad) (@FayasNoushad)
+# Author: Fayas (https://github.com/FayasNoushad)
 
 import os
-import requests
-from requests.utils import requote_uri
+from dotenv import load_dotenv
 from pyrogram import Client, filters
+from pyrogram.enums import ChatType
 from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pypi import pypi_text, pypi_buttons
 
 
-API = "https://api.abirhasan.wtf/pypi?query="
+load_dotenv()
 
 START_TEXT = """
 Hello {},
@@ -15,11 +16,9 @@ I am a pypi package search telegram bot.
 
 - Send a pypi package name.
 - I will send the information of package.
-
-Made by @FayasNoushad
 """
 
-BUTTONS = [InlineKeyboardButton('⚙ Join Updates Channel ⚙', url='https://telegram.me/FayasNoushad')]
+BUTTONS = [InlineKeyboardButton('⚙ Feedback ⚙', url='https://telegram.me/FayasNoushad')]
 
 Bot = Client(
     "PyPi-Bot",
@@ -43,44 +42,39 @@ async def start(bot, update):
 
 @Bot.on_message(filters.text)
 async def pypi_info(bot, update):
+    
+    message = await update.reply_text(
+        text="Checking...",
+        quote=True
+    )
+    
     try:
-        query = update.text if update.chat.type == "private" else update.text.split()[1]
+        
+        chat_type = update.chat.type
+        text = update.text
+    
+        # Check chat type private or not
+        if (chat_type==ChatType.PRIVATE):
+            query = text
+        else:
+            query = text.split()[1]
+        
+        # get text and buttons from pypi.py file
         text = pypi_text(query)
-        reply_markup = InlineKeyboardMarkup([pypi_buttons(query), BUTTONS])
-        await update.reply_text(
+        buttons = pypi_buttons(query)
+        
+        # reply package informations
+        await message.edit_text(
             text=text,
             disable_web_page_preview=True,
-            reply_markup=reply_markup,
-            quote=True
+            reply_markup=buttons
         )
-    except:
-        pass
-
-
-def pypi(query):
-    r = requests.get(API + requote_uri(query))
-    info = r.json()
-    return info
-
-
-def pypi_text(query):
-    info = pypi(query)
-    text = "--**Information**--\n"
-    text += f"\n**Package Name:** `{info['PackageName']}`"
-    text += f"\n**Title:** `{info['Title']}`"
-    text += f"\n**About:** `{info['About']}`"
-    text += f"\n**Latest Release Date:** `{info['LatestReleaseDate']}`"
-    text += f"\n**Pip Command:** `{info['PipCommand']}`"
-    return text
-
-
-def pypi_buttons(query):
-    info = pypi(query)
-    buttons = [
-        InlineKeyboardButton(text="PyPi", url=info['PyPi']),
-        InlineKeyboardButton(text="Home Page", url=info['HomePage'])
-    ]
-    return buttons
+        
+    except Exception as e:
+        # print(e)
+        await message.edit_text(
+            text="Something went wrong"
+        )
 
 
 Bot.run()
